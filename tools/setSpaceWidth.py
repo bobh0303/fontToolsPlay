@@ -1,7 +1,7 @@
 #!/bin/python3
 ''' create derived fonts with alternate space widths
 
-usage: adjustSpaceWidth spacewidths ttffile(s) ...
+usage: setSpaceWidth spacewidths ttffile(s) ...
 
 spacewidths = comma-separated list of 1 or 2 integer values to serve as space widths
      First integer is desired width of 'space', second, if supplied is of 'space.arab'
@@ -12,13 +12,13 @@ output font names and font filenames are constructed from the input by appending
 
 examples:
     # set width of space glyph to 300 and write font named 'Zork-300 Regular' to Zork-Regular-300.ttf:
-    adjustSpaceWidth 300 Zork-Regular.ttf
+    setSpaceWidth 300 Zork-Regular.ttf
 
     # set space to 300, space.arab to 210, and write font named 'Zork-300-210' Regular to to Zork-Regular-300-210.ttf
-    adjustSpaceWidth 300,210 Zork-Regular.ttf
+    setSpaceWidth 300,210 Zork-Regular.ttf
 
     # Similar to above but process all ttfs in folder:
-    adjustSpaceWidth 300,210 *.ttf
+    setSpaceWidth 300,210 *.ttf
 '''
 from fontTools.ttLib import TTFont
 from glob import glob
@@ -28,7 +28,7 @@ import sys
 
 if len(sys.argv) < 3:
     sys.stderr.write('insufficient arguments.\n')
-    sys.stderr.write('usage: usage: adjustSpaceWidth spacewidths ttffile(s) ...\n')
+    sys.stderr.write('usage: usage: setSpaceWidth spacewidths ttffile(s) ...\n')
     exit(1)
 
 m = re.match('(\d+)(?:,(\d+))?',sys.argv[1])
