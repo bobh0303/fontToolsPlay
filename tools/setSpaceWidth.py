@@ -1,4 +1,4 @@
-#!/bin/python3
+#! /usr/bin/env python3
 ''' create derived fonts with alternate space widths
 
 usage: setSpaceWidth spacewidths ttffile(s) ...
