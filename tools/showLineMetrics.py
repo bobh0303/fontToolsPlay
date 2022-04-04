@@ -1,9 +1,6 @@
-#! /usr/bin/env python
-''' print in tabular form line metrics from multiple ttf fonts'''
+#!/usr/bin/python3
+""" print in tabular form line metrics from multiple ttf fonts"""
 
-
-# from __future__ import print_function
-# from fontTools.misc.py23 import *
 from fontTools.ttLib import TTFont
 from glob import glob
 import csv
@@ -18,14 +15,14 @@ os2fields = ('sTypoAscender','sTypoDescender','sTypoLineGap',
 postfields = ('underlinePosition', 'underlineThickness')
 
 if len(sys.argv) < 2:
-	print("usage: showLineMetrics.py fontfile*.ttf ...")
-	sys.exit(1)
+    print("usage: showLineMetrics.py fontfile*.ttf ...")
+    sys.exit(1)
 
-with open('metrics.csv', 'wb') as csvfile:
+with open('metrics.csv', 'w', newline='', encoding='utf-8') as csvfile:
     csvwriter = csv.writer(csvfile)
 
     fonts = []
-    header = ['','']
+    header = ['', '']
 
     for arg in sys.argv[1:]:
         for fontfile in glob(arg):
@@ -35,10 +32,10 @@ with open('metrics.csv', 'wb') as csvfile:
 
     def doRow(tablename,fieldname):
         if doRow.prevtable != tablename:
-            row = [tablename,fieldname]
+            row = [tablename, fieldname]
             doRow.prevtable = tablename
         else:
-            row = ['',fieldname]
+            row = ['', fieldname]
         for f in fonts:
             row.append(f[tablename].__getattribute__(fieldname))
         csvwriter.writerow(row)
