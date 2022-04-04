@@ -1,12 +1,10 @@
 #!/usr/bin/python3
 """ print in tabular form fsSelection from multiple ttf fonts"""
 
-
 from fontTools.ttLib import TTFont
 from glob import glob
 import csv
 import sys
-from collections import OrderedDict
 from os.path import getmtime
 from time import strftime, localtime
 
@@ -17,11 +15,12 @@ if len(sys.argv) < 2:
 with open('fsSelection.csv', 'w', newline='', encoding='utf-8') as csvfile:
     csvwriter = csv.writer(csvfile)
 
-    bitList = OrderedDict(zip(['Italic', 'Underscore', 'Negative', 'Outlined', 'StrikeOut', 'Bold', 'Regular',
-               'UseTypoMetrics', 'WWS', 'Oblique'], [1 << x for x in range(0, 10)]))
+    bitList = ['Italic', 'Underscore', 'Negative', 'Outlined', 'StrikeOut', 'Bold', 'Regular',
+               'UseTypoMetrics', 'WWS', 'Oblique']
+    bitMasks = [1 << x for x in range(len(bitList))]
 
     header = ['font', 'mod year', 'OS/2 ver']
-    header.extend(bitList.keys())
+    header.extend(bitList)
     csvwriter.writerow(header)
 
     for arg in sys.argv[1:]:
@@ -39,6 +38,6 @@ with open('fsSelection.csv', 'w', newline='', encoding='utf-8') as csvfile:
                 f.close()
                 continue
             r.append(os2.version)
-            r.extend(['X' if os2.fsSelection & mask else '' for mask in bitList.values()])
+            r.extend(['X' if os2.fsSelection & mask else '' for mask in bitMasks])
             csvwriter.writerow(r)
             f.close()
