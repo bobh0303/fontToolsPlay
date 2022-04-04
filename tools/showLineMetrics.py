@@ -6,8 +6,9 @@ from glob import glob
 import csv
 import sys
 
+headfields = ('unitsPerEm', 'yMax', 'yMin')
 hheafields = ('ascent', 'descent', 'lineGap')
-os2fields = ('sTypoAscender','sTypoDescender','sTypoLineGap',
+os2fields = ('sTypoAscender', 'sTypoDescender', 'sTypoLineGap', 'USE_TYPO_METRICS',
              'usWinAscent', 'usWinDescent',
              'ySubscriptXSize', 'ySubscriptYSize', 'ySubscriptXOffset', 'ySubscriptYOffset',
              'ySuperscriptXSize', 'ySuperscriptYSize', 'ySuperscriptXOffset', 'ySuperscriptYOffset',
@@ -37,11 +38,14 @@ with open('metrics.csv', 'w', newline='', encoding='utf-8') as csvfile:
         else:
             row = ['', fieldname]
         for f in fonts:
-            row.append(f[tablename].__getattribute__(fieldname))
+            if fieldname == 'USE_TYPO_METRICS':
+                row.append('True' if f[tablename].fsSelection & 0x80 else 'False')
+            else:
+                row.append(f[tablename].__getattribute__(fieldname))
         csvwriter.writerow(row)
 
     doRow.prevtable = ''
-    for tableName,fieldList in (('hhea', hheafields),('OS/2', os2fields),('post', postfields)):
+    for tableName, fieldList in (('head', headfields), ('hhea', hheafields), ('OS/2', os2fields), ('post', postfields)):
         for fieldname in fieldList:
             doRow(tableName, fieldname)
 
